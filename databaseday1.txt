@@ -1,0 +1,292 @@
+Data
+----------
+
+Information  Stuctured data 
+
+
+Raw data 
+
+sachin  200 2010 gwalior 
+
+name      runs    year    place
+sachin    200     2010   gwalior
+
+1999
+-----------
+
+File Handling 
+
+University
+
+Student
+Employee
+
+Database
+  SQL Based    - MySQL,Oracle,DB2 ,MariaDB etc
+  No SQL Based  (document based  )  Mongo db ,etc
+
+SQL structure query language 
+--------------------------------------------------------------------
+DBMS ---> data base managment system 
+
+RDBMS     relational database managment  system 
+--------------------------------------------------------------------
+
+ SQL -- Stucture query language  --  case insensitive  
+by default eos end of statement  --  ;
+
+DDL     data defination language 
+
+CREATE
+ALTER
+DROP 
+
+DML   data manuplution language 
+
+INSERT
+UPDATE 
+DELETE 
+
+DRL  data retreival language
+
+SELECT 
+
+dcl    data control language 
+
+GRANT
+REVOKE
+
+tcl    tanscation control language
+
+ROLLBACK
+COMMIT 
+
+
+--------------------------
+
+Create Database:
+------------------------
+create database <DATABASENAME>
+
+example :   create database university;
+Query OK, 1 row affected (0.00 sec)
+
+Database Select:
+
+use databasename
+
+example : use university;
+Database changed
+
+
+View Tables
+
+show tables; 
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Create a table
+-----------------------------------------------------------------------------------------------------------------------------
+Datatype:
+    
+  char (10)   0 - 255   utf-8   fixed length
+  varchar  65535
+  varchar2  2kb
+
+  Text 
+     255            65535   14m          4b
+    smalltext , text , mediumtext , largetext 
+ 
+   int                 int(5) 
+   decimal  12.45669696969960504949                  decimal(5,2)  100.88    999.99
+   double   12.45670
+
+   signed , unsigned 
+
+   datetime , date , time , timestamp
+
+   clob , blob
+
+   
+   create table <Tablename> (columnanme datatype (size), columname2  datatype (size))
+
+create table student ( rollno int(6),
+    -> sname varchar(255),
+    -> course  varchar(255),
+    -> pincode  char(6));
+Query OK, 0 rows affected (0.31 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| student              |
++----------------------+
+1 row in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+desc will describe table data . Show meta data of table
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+mysql> desc student; 
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rollno  | int(6)       | YES  |     | NULL    |       |
+| sname   | varchar(255) | YES  |     | NULL    |       |
+| course  | varchar(255) | YES  |     | NULL    |       |
+| pincode | char(6)      | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.20 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT STATEMENT
+
+insert into  <tablename> values (v1,v2,v3...)
+
+insert into  <tablename> (columname1,columname2...) values ( v1,v2,v3,....)
+
+example:
+
+insert into student values (101 , 'Aman','Web','12345');
+
+insert into student (rollno,sname,course,pincode) values
+    -> (103,'chintu','Java','110091');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into student (rollno,sname,pincode) values
+    -> (201,'rohan','133484');
+Query OK, 1 row affected (0.03 sec)
+
+Fetch data: SELECT 
+-------------------------------------------------------------
+
+select * from tablename   - it will fetch all the data from given table 
+
+Example:
+ mysql> select * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
++--------+--------+--------+---------+
+
+select columname1,columnaname2  ..  from tablename -   it will fetch data of specific column
+
+Example:
+
+ select sname,course from student;
++--------+--------+
+| sname  | course |
++--------+--------+
+| Aman   | Web    |
+| chintu | Java   |
+| rohan  | NULL   |
++--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select rollno,course from student;
++--------+--------+
+| rollno | course |
++--------+--------+
+|    101 | Web    |
+|    103 | Java   |
+|    201 | NULL   |
++--------+--------+
+3 rows in set (0.00 sec)
+
+select columname as Aliasname , columnName2 as Aliasname from table --  it will show alias name while display
+
+Example:
+
+ select sname as studentName from student;
++-------------+
+| studentName |
++-------------+
+| Aman        |
+| chintu      |
+| rohan       |
++-------------+
+3 rows in set (0.03 sec)
+
+mysql> select sname as studentName,rollno as RollNo from student;
++-------------+--------+
+| studentName | RollNo |
++-------------+--------+
+| Aman        |    101 |
+| chintu      |    103 |
+| rohan       |    201 |
++-------------+--------+
+3 rows in set (0.00 sec)
+
+
+WHERE  clause is used to filter rows
+------------------------------------------------------------
+
+select * from tablename where condition
+
+ select * from student where rollno=103;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    103 | chintu | Java   | 110091  |
++--------+--------+--------+---------+
+1 row in set (0.03 sec)
+
+mysql> select * from student where sname='Aman';
++--------+-------+--------+---------+
+| rollno | sname | course | pincode |
++--------+-------+--------+---------+
+|    101 | Aman  | Web    | 12345   |
++--------+-------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select sname from student where course='Web';
++-------+
+| sname |
++-------+
+| Aman  |
++-------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
