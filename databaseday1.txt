@@ -251,6 +251,720 @@ mysql> select sname from student where course='Web';
 +-------+
 1 row in set (0.00 sec)
 
+For multiple condition we can use and , or , not
+
+and     all condition should be true
+
+-------
+
+Aggregate function will be implemented on specific column
+
+select aggfunction(columnname) from tablename
+
+agg function:
+
+avg()
+max()
+min()
+sum()
+count()  it will count number of rows in a given column
+
+
+-------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| employee           |
+| mysql              |
+| test               |
+| university         |
++--------------------+
+5 rows in set (0.07 sec)
+
+mysql> use university;
+Database changed
+mysql> select * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
++--------+--------+--------+---------+
+3 rows in set (0.08 sec)
+
+mysql> insert into student values(101,'Aman','C++','110091');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select sname from student where pincode='110091';
++--------+
+| sname  |
++--------+
+| chintu |
+| Aman   |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> select sname,course from student where pincode='110091';
++--------+--------+
+| sname  | course |
++--------+--------+
+| chintu | Java   |
+| Aman   | C++    |
++--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student where pincode='110091' and rollno=103;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    103 | chintu | Java   | 110091  |
++--------+--------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where pincode='110091' and sname='Aman';
++--------+-------+--------+---------+
+| rollno | sname | course | pincode |
++--------+-------+--------+---------+
+|    101 | Aman  | C++    | 110091  |
++--------+-------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where sname='Amana';
+Empty set (0.00 sec)
+
+mysql> select * from student where sname='Aman';
++--------+-------+--------+---------+
+| rollno | sname | course | pincode |
++--------+-------+--------+---------+
+|    101 | Aman  | Web    | 12345   |
+|    101 | Aman  | C++    | 110091  |
++--------+-------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> create table employee (eid int(6), ename varchar(255),epass varchar(16));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> desc employee;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| eid   | int(6)       | YES  |     | NULL    |       |
+| ename | varchar(255) | YES  |     | NULL    |       |
+| epass | varchar(16)  | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.05 sec)
+
+mysql> insert into employee values (1,'aayush','1234');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into employee values (2,'xyz','1234');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from employee;
++------+--------+-------+
+| eid  | ename  | epass |
++------+--------+-------+
+|    1 | aayush | 1234  |
+|    2 | xyz    | 1234  |
++------+--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where ename='xyz' and epass='1234';
++------+-------+-------+
+| eid  | ename | epass |
++------+-------+-------+
+|    2 | xyz   | 1234  |
++------+-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where ename='xyz' and epass='1235';
+Empty set (0.00 sec)
+
+mysql> select * from employee where ename='xyh' and epass='1234';
+Empty set (0.00 sec)
+
+
+mysql> select * from student where sname='Aman' or course='Java';
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student where  course!='Java';
++--------+-------+--------+---------+
+| rollno | sname | course | pincode |
++--------+-------+--------+---------+
+|    101 | Aman  | Web    | 12345   |
+|    101 | Aman  | C++    | 110091  |
++--------+-------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select max(rollno) from student;
++-------------+
+| max(rollno) |
++-------------+
+|         201 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(rollno) from student;
++-------------+
+| avg(rollno) |
++-------------+
+|    126.5000 |
++-------------+
+1 row in set (0.05 sec)
+
+mysql> select count(rollno) from student;
++---------------+
+| count(rollno) |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(course) from student;
++---------------+
+| count(course) |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select min(course) from student;
++-------------+
+| min(course) |
++-------------+
+| C++         |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select min(rollno) from student;
++-------------+
+| min(rollno) |
++-------------+
+|         101 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(rollno)/2 from student;
++-----------------+
+| count(rollno)/2 |
++-----------------+
+|          2.0000 |
++-----------------+
+1 row in set (0.02 sec)
+
+mysql> select rollno*2 from student;
++----------+
+| rollno*2 |
++----------+
+|      202 |
+|      206 |
+|      402 |
+|      202 |
++----------+
+4 rows in set (0.02 sec)
+
+mysql> select sum(rollno) from student;
++-------------+
+| sum(rollno) |
++-------------+
+|         506 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(rollno)/count(rollno) from student;
++---------------------------+
+| sum(rollno)/count(rollno) |
++---------------------------+
+|                  126.5000 |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select course*2 from student;
++----------+
+| course*2 |
++----------+
+|        0 |
+|        0 |
+|     NULL |
+|        0 |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> select count(sname) from student;
++--------------+
+| count(sname) |
++--------------+
+|            4 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(sname) from student where sname='Aman';
++--------------+
+| count(sname) |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(rollno) from student where rollno>150;
++-------------+
+| sum(rollno) |
++-------------+
+|         201 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where rollno>150;
++--------+-------+--------+---------+
+| rollno | sname | course | pincode |
++--------+-------+--------+---------+
+|    201 | rohan | NULL   | 133484  |
++--------+-------+--------+---------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select sname from student;
++--------+
+| sname  |
++--------+
+| Aman   |
+| chintu |
+| rohan  |
+| Aman   |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct sname from student;
++--------+
+| sname  |
++--------+
+| Aman   |
+| chintu |
+| rohan  |
++--------+
+3 rows in set (0.05 sec)
+
+mysql> select distinct * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> insert into student values(101,'Aman','C++','110091');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
+|    101 | Aman   | C++    | 110091  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct * from student;
++--------+--------+--------+---------+
+| rollno | sname  | course | pincode |
++--------+--------+--------+---------+
+|    101 | Aman   | Web    | 12345   |
+|    103 | chintu | Java   | 110091  |
+|    201 | rohan  | NULL   | 133484  |
+|    101 | Aman   | C++    | 110091  |
++--------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct rollno from student;
++--------+
+| rollno |
++--------+
+|    101 |
+|    103 |
+|    201 |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select distinct course from student;
++--------+
+| course |
++--------+
+| Web    |
+| Java   |
+| NULL   |
+| C++    |
++--------+
+4 rows in set (0.00 sec)
+
+mysql>
+
+INSERT MULTIPLE  VALUES 
+
+insert into tablename (col1,col2,col3...n)  values (v1,v2,v3),(r2,r22,r23),(r3,r32,r33)...
+
+insert into tablename values (v1,v2,v3),(r2,r22,r23),(r3,r32,r33)...
+
+ insert into student values (202,'Riya','data analysis','345667'),
+    -> (203,'Davesh','data analysis','345999'),
+    -> (204,'Akshita','data analysis','477472');
+Query OK, 3 rows affected (0.27 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | Aman    | Web           | 12345   |
+|    103 | chintu  | Java          | 110091  |
+|    201 | rohan   | NULL          | 133484  |
+|    101 | Aman    | C++           | 110091  |
+|    101 | Aman    | C++           | 110091  |
+|    202 | Riya    | data analysis | 345667  |
+|    203 | Davesh  | data analysis | 345999  |
+|    204 | Akshita | data analysis | 477472  |
++--------+---------+---------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> insert into student (rollno,sname,course) values (301,'Rohit','Data Science'),
+    -> (302,'Mavesh','Data Science');
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | Aman    | Web           | 12345   |
+|    103 | chintu  | Java          | 110091  |
+|    201 | rohan   | NULL          | 133484  |
+|    101 | Aman    | C++           | 110091  |
+|    101 | Aman    | C++           | 110091  |
+|    202 | Riya    | data analysis | 345667  |
+|    203 | Davesh  | data analysis | 345999  |
+|    204 | Akshita | data analysis | 477472  |
+|    301 | Rohit   | Data Science  | NULL    |
+|    302 | Mavesh  | Data Science  | NULL    |
++--------+---------+---------------+---------+
+10 rows in set (0.00 sec)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+
+ALTER  STATEMENT - IT WILL HELP TO MODIFY, ADD AND REMOVE SCHEMA ATTIBUTES
+
+Syntax  -   alter table tablename  add/modify/drop  coln
+
+alter table tablename  add column / modify column / drop column newupdate 
+
+alter table student add city varchar(200);
+Query OK, 10 rows affected (0.52 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+------+
+| rollno | sname   | course        | pincode | city |
++--------+---------+---------------+---------+------+
+|    101 | Aman    | Web           | 12345   | NULL |
+|    103 | chintu  | Java          | 110091  | NULL |
+|    201 | rohan   | NULL          | 133484  | NULL |
+|    101 | Aman    | C++           | 110091  | NULL |
+|    101 | Aman    | C++           | 110091  | NULL |
+|    202 | Riya    | data analysis | 345667  | NULL |
+|    203 | Davesh  | data analysis | 345999  | NULL |
+|    204 | Akshita | data analysis | 477472  | NULL |
+|    301 | Rohit   | Data Science  | NULL    | NULL |
+|    302 | Mavesh  | Data Science  | NULL    | NULL |
++--------+---------+---------------+---------+------+
+10 rows in set (0.00 sec)
+
+mysql> alter table student drop city;
+Query OK, 10 rows affected (0.30 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | Aman    | Web           | 12345   |
+|    103 | chintu  | Java          | 110091  |
+|    201 | rohan   | NULL          | 133484  |
+|    101 | Aman    | C++           | 110091  |
+|    101 | Aman    | C++           | 110091  |
+|    202 | Riya    | data analysis | 345667  |
+|    203 | Davesh  | data analysis | 345999  |
+|    204 | Akshita | data analysis | 477472  |
+|    301 | Rohit   | Data Science  | NULL    |
+|    302 | Mavesh  | Data Science  | NULL    |
++--------+---------+---------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> alter table student modify column pincode int(6);
+Query OK, 10 rows affected (0.34 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | Aman    | Web           |   12345 |
+|    103 | chintu  | Java          |  110091 |
+|    201 | rohan   | NULL          |  133484 |
+|    101 | Aman    | C++           |  110091 |
+|    101 | Aman    | C++           |  110091 |
+|    202 | Riya    | data analysis |  345667 |
+|    203 | Davesh  | data analysis |  345999 |
+|    204 | Akshita | data analysis |  477472 |
+|    301 | Rohit   | Data Science  |    NULL |
+|    302 | Mavesh  | Data Science  |    NULL |
++--------+---------+---------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rollno  | int(6)       | YES  |     | NULL    |       |
+| sname   | varchar(255) | YES  |     | NULL    |       |
+| course  | varchar(255) | YES  |     | NULL    |       |
+| pincode | int(6)       | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.05 sec)
+
+mysql> alter table student modify column course varchar(500);
+Query OK, 10 rows affected (0.31 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rollno  | int(6)       | YES  |     | NULL    |       |
+| sname   | varchar(255) | YES  |     | NULL    |       |
+| course  | varchar(500) | YES  |     | NULL    |       |
+| pincode | int(6)       | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+
+UPDATE - TO UPDATE VALUE OF ROWS 
+
+update tablename set col1=v1,col2=v2 where condition
+
+
+DROP   to remove a database
+
+drop database databasename; 
+
+
+Delete  - to remove a row 
+
+delete from tablename where condition
+
+
+ update student set sname='aman' where rollno=101 and course='Web' ;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | aman    | Web           |   12345 |
+|    103 | chintu  | Java          |  110091 |
+|    201 | rohan   | NULL          |  133484 |
+|    101 | Chaman  | C++           |  110091 |
+|    101 | Chaman  | C++           |  110091 |
+|    202 | Riya    | data analysis |  345667 |
+|    203 | Davesh  | data analysis |  345999 |
+|    204 | Akshita | data analysis |  477472 |
+|    301 | Rohit   | Data Science  |  111111 |
+|    302 | Mavesh  | Data Science  |  100133 |
++--------+---------+---------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> delete from student where sname='Chaman';
+Query OK, 2 rows affected (0.06 sec)
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | aman    | Web           |   12345 |
+|    103 | chintu  | Java          |  110091 |
+|    201 | rohan   | NULL          |  133484 |
+|    202 | Riya    | data analysis |  345667 |
+|    203 | Davesh  | data analysis |  345999 |
+|    204 | Akshita | data analysis |  477472 |
+|    301 | Rohit   | Data Science  |  111111 |
+|    302 | Mavesh  | Data Science  |  100133 |
++--------+---------+---------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> delete from student where sname='rohan' and rollno=201;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | aman    | Web           |   12345 |
+|    103 | chintu  | Java          |  110091 |
+|    202 | Riya    | data analysis |  345667 |
+|    203 | Davesh  | data analysis |  345999 |
+|    204 | Akshita | data analysis |  477472 |
+|    301 | Rohit   | Data Science  |  111111 |
+|    302 | Mavesh  | Data Science  |  100133 |
++--------+---------+---------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student group by course;
++--------+--------+---------------+---------+
+| rollno | sname  | course        | pincode |
++--------+--------+---------------+---------+
+|    202 | Riya   | data analysis |  345667 |
+|    301 | Rohit  | Data Science  |  111111 |
+|    103 | chintu | Java          |  110091 |
+|    101 | aman   | Web           |   12345 |
++--------+--------+---------------+---------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> select * from student group by course having rollno>203;
++--------+-------+--------------+---------+
+| rollno | sname | course       | pincode |
++--------+-------+--------------+---------+
+|    301 | Rohit | Data Science |  111111 |
++--------+-------+--------------+---------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from student group by course having rollno=202;
++--------+-------+---------------+---------+
+| rollno | sname | course        | pincode |
++--------+-------+---------------+---------+
+|    202 | Riya  | data analysis |  345667 |
++--------+-------+---------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from student group by course where  rollno=202;
+E
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
