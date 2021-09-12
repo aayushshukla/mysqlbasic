@@ -1,0 +1,266 @@
+create table tablename ( column name datatype (size) contraint CONSTRAIN NAME 1,
+CN 2 , .... ,column name2  datatype (size))
+
+
+create table product ( 
+pid int(6) auto_increment , 
+pname varchar(300)  NOT NULL,
+pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+primary key(pid));
+
+create table product ( 
+pid int(6) auto_increment , 
+pname varchar(300)  UNIQUE,
+pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+primary key(pid));
+
+
+create table product ( 
+pid int(6) auto_increment  NOT NULL UNIQUE, 
+pname varchar(300)  UNIQUE,
+pcat varchar(100) NOT NULL , pcomp varchar(200) 
+);
+
+Create table tablename ( col1 datatype(size) , column 2  datatype (size),
+foreign key  (refrencing table column name)
+references tablename1 (columns ));
+
+create table inventory( invid int(8) , mrp int(8), noofitems int(8),
+pid int(8),
+foreign key(pid) references product(pid) );
+
+
+examples
+
+mysql> select * from courses;
++----------+---------------+
+| courseid | coursename    |
++----------+---------------+
+|        1 | C++           |
+|        2 | Java          |
+|        3 | Python        |
+|        4 | Data Analysis |
+|        5 | Data Science  |
+|        6 | Web           |
+|        7 | NULL          |
++----------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> delete from courses where courseid=7;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> alter table courses modify  coursename varchar(100) NOT NULL;
+Query OK, 6 rows affected (0.34 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> desc courses;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| courseid   | int(6)       | NO   | PRI | 0       |       |
+| coursename | varchar(100) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> insert into courses (courseid) values (7);
+ERROR 1364 (HY000): Field 'coursename' doesn't have a default value
+mysql> create table product (
+    -> pid int(6) auto increment ,
+    -> pname varchar(300)  NOT NULL,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+    -> primary key(pid));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto increment ,
+pname varchar(300)  NOT NULL,
+pcat varchar(100) NOT NULL , pco' at line 2
+mysql> create table product (
+    -> pid int(6) auto_increment ,
+    -> pname varchar(300)  NOT NULL,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+    -> primary key(pid));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| pid   | int(6)       | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(300) | NO   |     | NULL    |                |
+| pcat  | varchar(100) | NO   |     | NULL    |                |
+| pcomp | varchar(200) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+4 rows in set (0.02 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('maggie','food','nestle');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from product;
++-----+--------+------+--------+
+| pid | pname  | pcat | pcomp  |
++-----+--------+------+--------+
+|   1 | maggie | food | nestle |
++-----+--------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('yippe','food','sunfeast');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from product;
++-----+--------+------+----------+
+| pid | pname  | pcat | pcomp    |
++-----+--------+------+----------+
+|   1 | maggie | food | nestle   |
+|   2 | yippe  | food | sunfeast |
++-----+--------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> show create table product;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                                                                                                                                                                                          |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| product | CREATE TABLE `product` (
+  `pid` int(6) NOT NULL auto_increment,
+  `pname` varchar(300) NOT NULL,
+  `pcat` varchar(100) NOT NULL,
+  `pcomp` varchar(200) default NULL,
+  PRIMARY KEY  (`pid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> drop table product;
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> select * from product;
+ERROR 1146 (42S02): Table 'university.product' doesn't exist
+mysql> create table product (
+    -> pid int(6) auto_increment ,
+    -> pname varchar(300)  UNIQUE,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+    -> primary key(pid));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| pid   | int(6)       | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(300) | YES  | UNI | NULL    |                |
+| pcat  | varchar(100) | NO   |     | NULL    |                |
+| pcomp | varchar(200) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('maggie','food','nestle');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('maggie','food','sunfeast');
+ERROR 1062 (23000): Duplicate entry 'maggie' for key 2
+mysql> select * from product;
++-----+--------+------+--------+
+| pid | pname  | pcat | pcomp  |
++-----+--------+------+--------+
+|   1 | maggie | food | nestle |
++-----+--------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> create table product (
+    -> pid int(6) auto_increment  NOT NULL UNIQUE,
+    -> pname varchar(300)  UNIQUE,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 5
+mysql> create table product (
+    -> pid int(6) auto_increment  NOT NULL UNIQUE,
+    -> pname varchar(300)  UNIQUE,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200)
+    -> );
+
+mysql> create table product (
+    -> pid int(6) auto_increment  NOT NULL UNIQUE,
+    -> pname varchar(300)  UNIQUE,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200)
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> desc product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| pid   | int(6)       | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(300) | YES  | UNI | NULL    |                |
+| pcat  | varchar(100) | NO   |     | NULL    |                |
+| pcomp | varchar(200) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+4 rows in set (0.02 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| product              |
+| student              |
++----------------------+
+4 rows in set (0.00 sec)
+
+mysql> drop table product;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| student              |
++----------------------+
+3 rows in set (0.00 sec)
+
+mysql> create table product (
+    -> pid int(6) auto_increment ,
+    -> pname varchar(300)  NOT NULL,
+    -> pcat varchar(100) NOT NULL , pcomp varchar(200) ,
+    -> primary key(pid));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('maggie','food','sunfeast');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into product (pname,pcat,pcomp) values ('goodday','food','sunfeast');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   1 | maggie  | food | sunfeast |
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> create table inventory( invid int(8) , mrp int(8), noofitems int(8),
+    -> pid int(8),
+    -> foreign key(pid) references product(pid) );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc inventory;
++-----------+--------+------+-----+---------+-------+
+| Field     | Type   | Null | Key | Default | Extra |
++-----------+--------+------+-----+---------+-------+
+| invid     | int(8) | YES  |     | NULL    |       |
+| mrp       | int(8) | YES  |     | NULL    |       |
+| noofitems | int(8) | YES  |     | NULL    |       |
+| pid       | int(8) | YES  | MUL | NULL    |       |
++-----------+--------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> insert into inventory values (101,10,100,3);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`university/inventory`, CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`))
+mysql> insert into inventory values (101,10,100,1);
+Query OK, 1 row affected (0.08 sec)
+
+
+
+
+
