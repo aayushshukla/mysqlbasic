@@ -259,6 +259,265 @@ mysql> insert into inventory values (101,10,100,3);
 ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`university/inventory`, CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`))
 mysql> insert into inventory values (101,10,100,1);
 Query OK, 1 row affected (0.08 sec)
+-------------------------------------------------------------------------------------------------------------------------
+
+on delete cascade
+on delete set null
+on delete no action 
+
+##########################################################################
+create table inventory ( invid int(8)   auto_increment primary key ,
+noofitems int(8) NOT NULL , 
+priceofitems int(8) NOT NULL,
+productid int(8),
+constraint product_pid_fk 
+foreign key (productid)  references product(pid)  
+on delete cascade )
+
+create table inventory ( invid int(8)   auto_increment primary key ,
+noofitems int(8) NOT NULL , 
+priceofitems int(8) NOT NULL,
+productid int(8),
+constraint product_pid_fk 
+foreign key (productid)  references product(pid)  
+on delete set NULL )
+-------------------------------------------------------------------------------------------------------------------------
+
+mysql> use university;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| inventory            |
+| product              |
+| student              |
++----------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   1 | maggie  | food | sunfeast |
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+2 rows in set (0.05 sec)
+
+mysql> select * from inventory;
++-------+------+-----------+------+
+| invid | mrp  | noofitems | pid  |
++-------+------+-----------+------+
+|   101 |   10 |       100 |    1 |
++-------+------+-----------+------+
+1 row in set (0.04 sec)
+
+mysql> insert into inventory values(102,5,50,4);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`university/inventory`, CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`))
+mysql> insert into inventory values(102,5,50,2);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from inventory;
++-------+------+-----------+------+
+| invid | mrp  | noofitems | pid  |
++-------+------+-----------+------+
+|   101 |   10 |       100 |    1 |
+|   102 |    5 |        50 |    2 |
++-------+------+-----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   1 | maggie  | food | sunfeast |
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> delete from product where pid=1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`university/inventory`, CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`))
+mysql> delete from inventory where pid=1;
+Query OK, 1 row affected (0.15 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   1 | maggie  | food | sunfeast |
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from inventory;
++-------+------+-----------+------+
+| invid | mrp  | noofitems | pid  |
++-------+------+-----------+------+
+|   102 |    5 |        50 |    2 |
++-------+------+-----------+------+
+1 row in set (0.00 sec)
+
+mysql> delete from product where pid=1;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+1 row in set (0.00 sec)
+
+mysql> drop table product;
+ERROR 1217 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+mysql> drop table inventory;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| product              |
+| student              |
++----------------------+
+4 rows in set (0.00 sec)
+
+
+mysql> create table inventory ( invid int(8)   auto_increment primary key ,
+    -> noofitems int(8) NOT NULL ,
+    -> priceofitems int(8) NOT NULL,
+    -> productid int(8),
+    -> constraint product_pid_fk
+    -> foreign key (productid)  references product(pid)
+    -> on delete cascade )
+    -> ;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into inventory values(101,10,5,1);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`university/inventory`, CONSTRAINT `product_pid_fk` FOREIGN KEY (`productid`) REFERENCES `product` (`pid`) ON DELETE CASCADE)
+mysql> insert into inventory values(101,10,5,2);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from inventory;
++-------+-----------+--------------+-----------+
+| invid | noofitems | priceofitems | productid |
++-------+-----------+--------------+-----------+
+|   101 |        10 |            5 |         2 |
++-------+-----------+--------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from product;
++-----+---------+------+----------+
+| pid | pname   | pcat | pcomp    |
++-----+---------+------+----------+
+|   2 | goodday | food | sunfeast |
++-----+---------+------+----------+
+1 row in set (0.00 sec)
+
+mysql> delete from product where pid=2;
+Query OK, 1 row affected (0.19 sec)
+
+mysql> select * from inventory;
+Empty set (0.00 sec)
+
+mysql> drop table inventory;
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| product              |
+| student              |
++----------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table inventory ( invid int(8)   auto_increment primary key ,
+    -> noofitems int(8) NOT NULL ,
+    -> priceofitems int(8) NOT NULL,
+    -> productid int(8),
+    -> constraint product_pid_fk
+    -> foreign key (productid)  references product(pid)
+    -> on delete set NULL );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from product;
+Empty set (0.00 sec)
+
+mysql> desc product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| pid   | int(6)       | NO   | PRI | NULL    | auto_increment |
+| pname | varchar(300) | NO   |     | NULL    |                |
+| pcat  | varchar(100) | NO   |     | NULL    |                |
+| pcomp | varchar(200) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+4 rows in set (0.02 sec)
+
+mysql> insert into product values (1001,'kitkat','food','nestle');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from product;
++------+--------+------+--------+
+| pid  | pname  | pcat | pcomp  |
++------+--------+------+--------+
+| 1001 | kitkat | food | nestle |
++------+--------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into inventory values(222,10,5,1001);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from inventory;
++-------+-----------+--------------+-----------+
+| invid | noofitems | priceofitems | productid |
++-------+-----------+--------------+-----------+
+|   222 |        10 |            5 |      1001 |
++-------+-----------+--------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into product values (1002,'maggie','food','nestle');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into inventory values(220,100,5,1002);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from inventory;
++-------+-----------+--------------+-----------+
+| invid | noofitems | priceofitems | productid |
++-------+-----------+--------------+-----------+
+|   220 |       100 |            5 |      1002 |
+|   222 |        10 |            5 |      1001 |
++-------+-----------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> delete from product where pid=1002;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from inventory;
++-------+-----------+--------------+-----------+
+| invid | noofitems | priceofitems | productid |
++-------+-----------+--------------+-----------+
+|   220 |       100 |            5 |      NULL |
+|   222 |        10 |            5 |      1001 |
++-------+-----------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from product;
++------+--------+------+--------+
+| pid  | pname  | pcat | pcomp  |
++------+--------+------+--------+
+| 1001 | kitkat | food | nestle |
++------+--------+------+--------+
+1 row in set (0.00 sec)
+
 
 
 
