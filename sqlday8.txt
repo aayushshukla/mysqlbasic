@@ -1,0 +1,185 @@
+Join clause is used to merge rows of two or more than two tables 
+
+Inner join
+Left Join
+Right Join 
+Full Join(Outer Join)
+
+Select col1,col2 from (table 1 
+INNER JOIN  tablename2 
+ON tablename1.columnname = tablename2.column
+
+
+Select col1,col2 from (table 1 
+INNER JOIN  tablename2 
+ON tablename1.columnname = tablename2.column)
+INNER JOIN tablename3 ON tablename2.column= tablename3.column
+
+Select items.itemname,items.itemcompany,
+orders.nooforder , orders.price  from items 
+INNER JOIN orders 
+ON items.itemid = orders.itemid
+
+Select items.itemname,items.itemcompany,
+productprice.mrp, productprice.discount from productprice 
+LEFT JOIN items 
+ON  productprice.itemid = items.itemid
+
+
+Select items.itemname,items.itemcompany,
+productprice.mrp, productprice.discount from items
+LEFT JOIN productprice 
+ON  productprice.itemid = items.itemid
+
+
+
+mysql> create database store;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use store;
+Database changed
+mysql> create table items (itemid int(8) primary key auto_increment,
+    -> itemname varchar(255) , itemcompany varchar(255));
+Query OK, 0 rows affected (0.12 sec)
+
+
+mysql> create table orders (orderid int(8) primary key auto_increment,
+    -> nooforder int(8) , price int(8),
+    -> itemid int(8) ,
+    -> constraint items_itemid_fk
+    -> foreign key(itemid) references items(itemid)
+    -> on delete cascade
+    -> on update cascade );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> insert into items values (101,'maggie','nestle'),(102,'yippe','sunfeast');
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from items;
++--------+----------+-------------+
+| itemid | itemname | itemcompany |
++--------+----------+-------------+
+|    101 | maggie   | nestle      |
+|    102 | yippe    | sunfeast    |
++--------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into orders values(1,100,500,102);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from items;
++--------+----------+-------------+
+| itemid | itemname | itemcompany |
++--------+----------+-------------+
+|    101 | maggie   | nestle      |
+|    102 | yippe    | sunfeast    |
++--------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from orders;
++---------+-----------+-------+--------+
+| orderid | nooforder | price | itemid |
++---------+-----------+-------+--------+
+|       1 |       100 |   500 |    102 |
++---------+-----------+-------+--------+
+1 row in set (0.00 sec)
+
+
+mysql> Select items.itemname,items.itemcompany,
+    -> orders.nooforder , orders.price  from items
+    -> INNER JOIN orders
+    -> ON items.itemid = orders.itemid;
++----------+-------------+-----------+-------+
+| itemname | itemcompany | nooforder | price |
++----------+-------------+-----------+-------+
+| yippe    | sunfeast    |       100 |   500 |
++----------+-------------+-----------+-------+
+1 row in set (0.03 sec)
+
+
+mysql> create table productprice  (priceid int(8) primary key auto_increment,
+    -> itemid int(8) , mrp int(10) , discount int(2));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into productprice values(111,101,600,30),
+    -> (112,501,900,50),
+    -> (115,601,800,20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 3
+mysql> insert into productprice values(111,101,600,30),
+    -> (112,501,900,50),
+    -> (115,601,800,20);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from productprice;
++---------+--------+------+----------+
+| priceid | itemid | mrp  | discount |
++---------+--------+------+----------+
+|     111 |    101 |  600 |       30 |
+|     112 |    501 |  900 |       50 |
+|     115 |    601 |  800 |       20 |
++---------+--------+------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from items;
++--------+----------+-------------+
+| itemid | itemname | itemcompany |
++--------+----------+-------------+
+|    101 | maggie   | nestle      |
+|    102 | yippe    | sunfeast    |
++--------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> Select items.itemname,items.itemcompany,
+    -> productprice.mrp, productprice.discount from productprice
+    -> LEFT JOIN items
+    -> ON  productprice.itemid = items.itemid;
++----------+-------------+------+----------+
+| itemname | itemcompany | mrp  | discount |
++----------+-------------+------+----------+
+| maggie   | nestle      |  600 |       30 |
+| NULL     | NULL        |  900 |       50 |
+| NULL     | NULL        |  800 |       20 |
++----------+-------------+------+----------+
+3 rows in set (0.03 sec)
+
+mysql>
+mysql>
+mysql> Select items.itemname,items.itemcompany,
+    -> productprice.mrp, productprice.discount from items
+    -> LEFT JOIN productprice
+    -> ON  productprice.itemid = items.itemid;
++----------+-------------+------+----------+
+| itemname | itemcompany | mrp  | discount |
++----------+-------------+------+----------+
+| maggie   | nestle      |  600 |       30 |
+| yippe    | sunfeast    | NULL |     NULL |
++----------+-------------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
