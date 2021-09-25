@@ -158,7 +158,7 @@ mysql> Select items.itemname,items.itemcompany,
 +----------+-------------+------+----------+
 2 rows in set (0.00 sec)
 
-mysql>
+
 
 
 
