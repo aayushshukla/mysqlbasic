@@ -1,0 +1,55 @@
+Noun  Entity  , Attribute 
+
+verb 
+
+user should able to view and edit following info
+
+
+on the photo 
+
+right  name and contact info
+
+user_profile
+
+  - userid           int , auto incr , primary key
+  - profile pic    varchar
+ -  user name 
+ -  email 
+ -  contactno   
+   
+skills:
+  -skillid        pk,incr        
+  -skillname   
+
+user_skills
+  id                   primary key , incr 
+ user_id          101    fk 
+  skill_id          1 
+ *A user may choose to enter his educational/company details*
+
+institute
+   instid
+   insname
+   startdate
+   enddate
+
+company 
+     companyid
+      name
+      startdate
+      enddate 
+
+user_education 
+     id
+    userid
+    instid
+
+user_company
+   id
+   userid
+   companyid 
+
+
+
+   
+  
