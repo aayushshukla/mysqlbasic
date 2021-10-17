@@ -1,4 +1,4 @@
-Join clause is used to merge rows of two or more than two tables 
+ Join clause is used to merge rows of two or more than two tables 
 
 Inner join
 Left Join
@@ -157,6 +157,355 @@ mysql> Select items.itemname,items.itemcompany,
 | yippe    | sunfeast    | NULL |     NULL |
 +----------+-------------+------+----------+
 2 rows in set (0.00 sec)
+
+mysql>
+select items.itemname ,items.itemcompany,
+items.itemid,productprice.itemid,
+productprice.mrp  from items left join productprice on 
+items.itemid=productprice.itemid
+union all
+select items.itemname ,items.itemcompany,
+items.itemid,productprice.itemid,
+productprice.mrp  from items right join productprice on 
+items.itemid=productprice.itemid
+order by productprice.mrp
+
+version should be 8.0 above
+
+copy schema of oldtable into newtable .It will copy its column and structure 
+
+select * into newtablename from oldtablename
+
+select * into newtablename IN filename from oldtablename 
+
+select * into itemdetaild IN "itembackup.mdb" from items
+
+
+ show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| employee           |
+| feemanagment       |
+| mysql              |
+| store              |
+| test               |
+| university         |
++--------------------+
+7 rows in set (0.17 sec)
+
+mysql> use store;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_store |
++-----------------+
+| items           |
+| orders          |
+| productprice    |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders;
++---------+-----------+-------+--------+
+| orderid | nooforder | price | itemid |
++---------+-----------+-------+--------+
+|       1 |       100 |   500 |    102 |
++---------+-----------+-------+--------+
+1 row in set (0.04 sec)
+
+mysql> select * from items;
++--------+----------+-------------+
+| itemid | itemname | itemcompany |
++--------+----------+-------------+
+|    101 | maggie   | nestle      |
+|    102 | yippe    | sunfeast    |
++--------+----------+-------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from productprice;
++---------+--------+------+----------+
+| priceid | itemid | mrp  | discount |
++---------+--------+------+----------+
+|     111 |    101 |  600 |       30 |
+|     112 |    501 |  900 |       50 |
+|     115 |    601 |  800 |       20 |
++---------+--------+------+----------+
+3 rows in set (0.03 sec)
+
+
+
+mysql> select items.itemname ,items.itemcompany,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid;
++----------+-------------+------+
+| itemname | itemcompany | mrp  |
++----------+-------------+------+
+| maggie   | nestle      |  600 |
+| yippe    | sunfeast    | NULL |
+| maggie   | nestle      |  600 |
+| NULL     | NULL        |  900 |
+| NULL     | NULL        |  800 |
++----------+-------------+------+
+5 rows in set (0.03 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| maggie   | nestle      |    101 |    101 |  600 |
+| yippe    | sunfeast    |    102 |   NULL | NULL |
+| maggie   | nestle      |    101 |    101 |  600 |
+| NULL     | NULL        |   NULL |    501 |  900 |
+| NULL     | NULL        |   NULL |    601 |  800 |
++----------+-------------+--------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| maggie   | nestle      |    101 |    101 |  600 |
+| yippe    | sunfeast    |    102 |   NULL | NULL |
++----------+-------------+--------+--------+------+
+2 rows in set (0.00 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| maggie   | nestle      |    101 |    101 |  600 |
+| NULL     | NULL        |   NULL |    501 |  900 |
+| NULL     | NULL        |   NULL |    601 |  800 |
++----------+-------------+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid
+    -> order by productprice.mrp;
+ERROR 1054 (42S22): Unknown column 'productprice.mrp' in 'order clause'
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid
+    ->
+    -> ;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| maggie   | nestle      |    101 |    101 |  600 |
+| yippe    | sunfeast    |    102 |   NULL | NULL |
+| maggie   | nestle      |    101 |    101 |  600 |
+| NULL     | NULL        |   NULL |    501 |  900 |
+| NULL     | NULL        |   NULL |    601 |  800 |
++----------+-------------+--------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid
+    -> order by mrp
+    -> ;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| yippe    | sunfeast    |    102 |   NULL | NULL |
+| maggie   | nestle      |    101 |    101 |  600 |
+| maggie   | nestle      |    101 |    101 |  600 |
+| NULL     | NULL        |   NULL |    601 |  800 |
+| NULL     | NULL        |   NULL |    501 |  900 |
++----------+-------------+--------+--------+------+
+5 rows in set (0.02 sec)
+
+mysql> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items left join productprice on
+    -> items.itemid=productprice.itemid
+    -> union all
+    -> select items.itemname ,items.itemcompany,
+    -> items.itemid,productprice.itemid,
+    -> productprice.mrp  from items right join productprice on
+    -> items.itemid=productprice.itemid
+    -> order by mrp desc;
++----------+-------------+--------+--------+------+
+| itemname | itemcompany | itemid | itemid | mrp  |
++----------+-------------+--------+--------+------+
+| NULL     | NULL        |   NULL |    501 |  900 |
+| NULL     | NULL        |   NULL |    601 |  800 |
+| maggie   | nestle      |    101 |    101 |  600 |
+| maggie   | nestle      |    101 |    101 |  600 |
+| yippe    | sunfeast    |    102 |   NULL | NULL |
++----------+-------------+--------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * into productcopy from productprice;
+ERROR 1327 (42000): Undeclared variable: productcopy
+mysql> select * into @productcopy from productprice;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+mysql> show tables;
++-----------------+
+| Tables_in_store |
++-----------------+
+| items           |
+| orders          |
+| productprice    |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * into @order1 from productprice;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+mysql> select * from productprice into @pprice1;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+mysql> use university;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_university |
++----------------------+
+| courses              |
+| employee             |
+| inventory            |
+| product              |
+| student              |
++----------------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from student;
++--------+---------+---------------+---------+
+| rollno | sname   | course        | pincode |
++--------+---------+---------------+---------+
+|    101 | aman    | Web           |   12345 |
+|    103 | chintu  | Java          |  110091 |
+|    202 | Riya    | data analysis |  345667 |
+|    203 | Davesh  | data analysis |  345999 |
+|    204 | Akshita | data analysis |  477472 |
+|    301 | Rohit   | Data Science  |  111111 |
+|    302 | Mavesh  | Data Science  |  100133 |
+|    501 | Ankit   | web           |  110019 |
+|    601 | R       | web           |  110019 |
++--------+---------+---------------+---------+
+9 rows in set (0.04 sec)
+
+mysql> select sname from student group by course;
++--------+
+| sname  |
++--------+
+| Riya   |
+| Rohit  |
+| chintu |
+| aman   |
++--------+
+4 rows in set (0.02 sec)
+
+mysql> select * from student group by course;
++--------+--------+---------------+---------+
+| rollno | sname  | course        | pincode |
++--------+--------+---------------+---------+
+|    202 | Riya   | data analysis |  345667 |
+|    301 | Rohit  | Data Science  |  111111 |
+|    103 | chintu | Java          |  110091 |
+|    101 | aman   | Web           |   12345 |
++--------+--------+---------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student group by course order by course;
++--------+--------+---------------+---------+
+| rollno | sname  | course        | pincode |
++--------+--------+---------------+---------+
+|    202 | Riya   | data analysis |  345667 |
+|    301 | Rohit  | Data Science  |  111111 |
+|    103 | chintu | Java          |  110091 |
+|    101 | aman   | Web           |   12345 |
++--------+--------+---------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student group by course order by course desc;
++--------+--------+---------------+---------+
+| rollno | sname  | course        | pincode |
++--------+--------+---------------+---------+
+|    101 | aman   | Web           |   12345 |
+|    103 | chintu | Java          |  110091 |
+|    301 | Rohit  | Data Science  |  111111 |
+|    202 | Riya   | data analysis |  345667 |
++--------+--------+---------------+---------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> select * from student group by course having rollno>201 ;
++--------+-------+---------------+---------+
+| rollno | sname | course        | pincode |
++--------+-------+---------------+---------+
+|    202 | Riya  | data analysis |  345667 |
+|    301 | Rohit | Data Science  |  111111 |
++--------+-------+---------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student group by course having rollno>201 order by course desc;
++--------+-------+---------------+---------+
+| rollno | sname | course        | pincode |
++--------+-------+---------------+---------+
+|    301 | Rohit | Data Science  |  111111 |
+|    202 | Riya  | data analysis |  345667 |
++--------+-------+---------------+---------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

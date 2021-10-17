@@ -1,0 +1,53 @@
+ Trigger are stored programs / procedure which are automatically executed or fired
+when some event oocur 
+
+Event can be
+DML  - insert , update or delete
+DDL  - create , alter , drop
+Database operation - LOGON , LOGOOFF ,STARTUP AND SHUTDOWN
+
+Triggers  can be define on the table , schema or database with which event is
+ assciated 
+
+Syntax 
+
+
+create | replace Trigger trigger name
+BEFORE|AFTER
+INSERT OR UPDATE OR DELETE 
+ON TABLENAME
+FOR EACH ROW 
+
+declare
+declaration:statement
+BEGIN
+Query
+End
+
+before | after  - tells about when trigger will be executed 
+on tablename - table associated with trigger
+for each row - it tell a row level trigger  ie
+a triggerwill be executed for each row bein affted
+
+a table lever trigger will executed only once when sql statemnet is executed
+
+example
+
+create trigger empsalary_diff
+before insert on employeedata
+for each row 
+declare  mx_salary int;
+begin
+mx_salary := 10;
+dbms_output.put_line('max salary' || :mx_salay);
+end;
+
+create trigger empsalary_diff2
+    after insert on employeedata
+     for each row  begin
+    declare mx_salary int(8);
+     insert into employeedata values(100,50000);
+    end;
+
+
+ 

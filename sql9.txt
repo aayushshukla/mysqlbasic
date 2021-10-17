@@ -1,0 +1,30 @@
+Sub queries when we write a query inside another query
+
+Nested query 
+
+select * from  table where condition = ( 
+     select * from  table2 where conditon =
+       (
+         select * from  table 3
+       ))
+
+Sub queries  two types:
+-----------------------------------
+
+ Correlated queries
+ Not correlated queries
+
+Not correlated queries :
+--------------------------------
+Outery query depends on inner query result
+First Inner query will be executed and after that outer query will executed
+
+Correlated Sub queries :
+----------------------------------
+outer query do not depends on inner query result
+First Outer query executed and than inner query will be executed 
+top to bottom approch
+
+SELECT id,salary from EMP E1 where N-1 =
+(SELECT COUNT(DISTINCT SALARY) 
+  FROM E2  WHERE E2.salary > E1.salary)

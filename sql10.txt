@@ -1,0 +1,61 @@
+Procedure a stored procedure is (similar to function) sql code that you can save and 
+re use it
+MAKE SURE U CHANGE DELIMITER
+delimiter symbol
+
+CREATE PROCEDURE 
+procedurename(IN,OUT)
+BEGIN
+query statement ;
+END
+
+TO USE
+
+call procedurename
+
+
+mysql> delimiter //
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DELIMITER ;
+
+mysql> CREATE PROCEDURE
+    -> empdata()
+    -> BEGIN
+    -> select * from emp;
+    -> END//
+mysql> CALL empdata();
+
+IN - is used to give argument in procedure 
+mysql> CREATE PROCEDURE  empdata1(IN eid int(8))
+   BEGIN
+     select * from emp where empid=eid;
+    END //
+
+call empdata1(2)
+
+mysql> delimiter //
+
+
+mysql>  CREATE PROCEDURE  empdata1(IN eid int(8))
+    ->    BEGIN
+    ->      select * from emp where empid=eid;
+    ->     END //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call empdata1(3)
+    -> //
++-------+---------+---------+
+| empid | empname | emppass |
++-------+---------+---------+
+|     3 | aayush  | 2345    |
++-------+---------+---------+
+1 row in set (0.02 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+ create procedure  fetchid10(IN en varchar(255),ep  varchar(255),OUT eid int)
+    begin
+   select empid into eid from emp where empname=en and emppass=ep;
+   end//
+
